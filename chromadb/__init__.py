@@ -33,6 +33,10 @@ def get_db(settings=__settings):
         require("clickhouse_port")
         require("persist_directory")
         logger.info("Using Clickhouse for database")
+
+        if settings["clickhouse_username"]:
+            assert settings["clickhouse_password"], f"Setting clickhouse_password is required when clickhouse_username is present"
+
         import chromadb.db.clickhouse
 
         return chromadb.db.clickhouse.Clickhouse(settings)

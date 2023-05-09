@@ -59,10 +59,20 @@ class Clickhouse(DB):
 
     def _init_conn(self):
         common.set_setting("autogenerate_session_id", False)
-        self._conn = clickhouse_connect.get_client(
-            host=self._settings.clickhouse_host,
-            port=int(self._settings.clickhouse_port),
-        )
+        conn_params = {
+            "host": self._settings.clickhouse_host,
+            "port": int(self._settings.clickhouse_port),
+        }
+        if self._settings.clickhouse_username:
+            conn_params["username"] = self._settings.clickhouse_username
+
+        if self._settings.clickhouse_password:
+            conn_params["password"] = self._settings.clickhouse_password
+
+        if self._settings.clickhouse_database:
+            conn_params["database"] = self._settings.clickhouse_database
+
+        self._conn = clickhouse_connect.get_client(**conn_params)
         self._create_table_collections(self._conn)
         self._create_table_embeddings(self._conn)
 

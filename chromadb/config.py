@@ -12,6 +12,9 @@ class Settings(BaseSettings):
 
     clickhouse_host: str = None
     clickhouse_port: str = None
+    clickhouse_username: str = None
+    clickhouse_password: str = None
+    clickhouse_database: str = None
 
     persist_directory: str = ".chroma"
 
